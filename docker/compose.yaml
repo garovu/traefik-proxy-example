@@ -20,7 +20,7 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       # Traefik configuration file
-      - ./config/docker-traefik.yaml:/etc/traefik/traefik.yaml
+      - ../config/docker-traefik.yaml:/etc/traefik/traefik.yaml
     networks:
       - vnet
       

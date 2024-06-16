@@ -6,6 +6,7 @@ name: traefik-monitoring-stack
 services:
   grafana:
     container_name: grafana-container
+    hostname: grafana
     environment:
     - GF_PANELS_DISABLE_SANITIZE_HTML=true
     - GF_PATHS_PROVISIONING=/var/lib/grafana/provisioning
@@ -29,6 +30,7 @@ services:
     # - grafana-vol:/var/lib/grafana
   promotheus:
     container_name: prometheus-container
+    hostname: prometheus
     command:
     - --config.file=/etc/prometheus/prometheus.yaml
     image: prom/prometheus:v2.51.0

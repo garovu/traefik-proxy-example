@@ -3,7 +3,7 @@ datasources:
 - name: Traefik
   type: prometheus
   access: proxy
-  url: http://prometheus:9090
+  url: http://promotheus:9090
   isDefault: true
   jsonData:
     timeInterval: "5s"

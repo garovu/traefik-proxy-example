@@ -30,4 +30,4 @@ Temporary Items
 k8s/traefik
 
 # local directory
-docker/local
+docker/local/

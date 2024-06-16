@@ -1,6 +1,6 @@
 ################################################################
 #
-# Configuration sample for Traefik v2.
+# Configuration sample for Traefik v3 custom by @garovu.
 #
 # For Traefik v1: https://github.com/traefik/traefik/blob/v1.7/traefik.sample.toml
 #
@@ -27,6 +27,9 @@ entryPoints:
 
   websecure:
     address: :443
+    
+  metrics:
+    address: :8082
 
 ################################################################
 # Traefik logs configuration
@@ -94,13 +97,13 @@ entryPoints:
 #
 # Optional
 #
-#api:
+api:
   # Enable the API in insecure mode
   #
   # Optional
   # Default: false
   #
-#  insecure: true
+ insecure: true
 
   # Enabled Dashboard
   #
@@ -141,7 +144,7 @@ entryPoints:
     # Optional
     # Default: "Host(`{{ normalize .Name }}`)"
     #
-#    defaultRule: Host(`{{ normalize .Name }}.docker.localhost`)
+  #  defaultRule: Host(`{{ normalize .Name }}.docker.localhost`)
 
     # Expose containers by default in traefik
     #
@@ -149,3 +152,21 @@ entryPoints:
     # Default: true
     #
 #    exposedByDefault: false
+
+################################################################
+# Traefik metrics configuration
+################################################################
+
+# Traefik metrics
+# Enabled by default and available at "/metrics" on the Dashboard
+#
+# Optional
+#
+metrics:
+  prometheus:
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
+    entryPoint: metrics

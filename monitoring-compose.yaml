@@ -1,0 +1,51 @@
+# This compose file is a monitoring stack that includes Grafana and Prometheus for docker traefik deployments.
+# Traefik offical monitoring dashboard
+# https://grafana.com/grafana/dashboards/17346-traefik-official-standalone-dashboard/ 
+
+name: traefik-monitoring-stack
+services:
+  grafana:
+    container_name: grafana-container
+    environment:
+    - GF_PANELS_DISABLE_SANITIZE_HTML=true
+    - GF_PATHS_PROVISIONING=/var/lib/grafana/provisioning
+    - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=scylladb-scylla-datasource
+    # This is where you set Grafana security
+    - GF_AUTH_BASIC_ENABLED=false
+    - GF_AUTH_ANONYMOUS_ENABLED=true
+    - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    - GF_SECURITY_ADMIN_PASSWORD=admin
+    # To set your home dashboard uncomment the following line, set VERSION to be your current version
+    #- GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/ver_VERSION/scylla-overview.VERSION.json
+    image: grafana/grafana:10.3.5
+    ports:
+    - 3000:3000
+    volumes:
+    - ./monitoring/grafana/build:/var/lib/grafana/dashboards
+    - ./monitoring/grafana/load.dashboards.yaml:/var/lib/grafana/provisioning/dashboards/load.yaml
+    - ./monitoring/grafana/datasources.yaml:/var/lib/grafana/provisioning/datasources/datasources.yaml
+    - ./local/grafana:/var/lib/grafana
+    # Uncomment to use volume
+    # - grafana-vol:/var/lib/grafana
+  promotheus:
+    container_name: prometheus-container
+    command:
+    - --config.file=/etc/prometheus/prometheus.yaml
+    image: prom/prometheus:v2.51.0
+    ports:
+    - 9090:9090
+    volumes:
+    - ./monitoring/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    - ./local/prometheus:/prometheus/data
+    # Uncomment to use a volume
+    # - prometheus-vol:/prometheus
+networks:
+  default:
+    name: traefik-proxy-compose_vnet
+    external: true
+
+volumes:
+  grafana-vol:
+    driver: local
+  prometheus-vol:
+    driver: local

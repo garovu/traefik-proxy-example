@@ -1,0 +1,47 @@
+# This is an example of a rule file for Traefik using Dynamic Configuration.
+# Official Documents: https://doc.traefik.io/traefik/routing/overview/
+
+http:
+  # Add the router
+  routers:
+    router0:
+      entryPoints:
+      - web
+      middlewares:
+      - my-basic-auth
+      service: service-foo
+      rule: Path(`/foo`)
+
+  # Add the middleware
+  middlewares:
+    my-basic-auth:
+      basicAuth:
+        users:
+        - test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/
+        - test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0
+        usersFile: etc/traefik/.htpasswd
+
+  # Add the service
+  services:
+    service-foo:
+      loadBalancer:
+        servers:
+        - url: http://foo/
+        - url: http://bar/
+        passHostHeader: false
+
+tcp:
+  routers:
+    to-database:
+      entryPoints:
+        - "mysql"
+      # Catch every request (only available rule for non-tls routers. See below.)
+      rule: "HostSNI(`*`)"
+      service: database
+
+udp:
+  routers:
+    Router-1:
+      # By default, routers listen to all UDP entrypoints
+      # i.e. "other", and "streaming".
+      service: "service-1"

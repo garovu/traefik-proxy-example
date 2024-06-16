@@ -21,9 +21,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # Traefik configuration file
       - ../config/docker-traefik.yaml:/etc/traefik/traefik.yaml
-    networks:
-      - vnet
-      
+      # Traefik dynamic configuration file
+      - ./rules:/etc/traefik/dynamic
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
 networks:
   vnet:
     external: false

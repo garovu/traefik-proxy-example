@@ -1,17 +1,29 @@
+# This is the main docker-compose file that will be starting the Traefik service.
+# Read more about Traefik at https://doc.traefik.io/traefik/getting-started/quick-start/
+
 name: traefik-proxy-compose
 services:
-  reverse-proxy:
+  traefik:
     # The official v3 Traefik docker image
     image: traefik:v3.0
+    container_name: traefik-container
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    # command: --api.insecure=true --providers.docker
     ports:
       # The HTTP port
       - "80:80"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
+      # The Promethues metrics port (/metrics endpoint)
+      - "8082:8082"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       # Traefik configuration file
-      - ./config/traefik.yaml:/etc/traefik/traefik.yaml
+      - ./config/docker-traefik.yaml:/etc/traefik/traefik.yaml
+    networks:
+      - vnet
+      
+networks:
+  vnet:
+    external: false

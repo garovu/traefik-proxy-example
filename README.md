@@ -2,6 +2,8 @@
 
 This repository contains a simple and easy example about Traefik Proxy v3 using Docker Compose and Kubernetes.
 
+![traefik proxy concept](image.png)
+
 ## Prerequisites
 
 Before getting started, make sure you have the following installed on your machine:
@@ -40,10 +42,24 @@ or
 
 5. Verify that the Traefik proxy is running by accessing the Traefik dashboard at `http://localhost:8080`.
 
+    Checking first example by going to `http:localhost:80` which will be point to the `whoami` container. More about [docker provider](https://doc.traefik.io/traefik/providers/docker/).
+
 6. Start monitoring cluster (just metrics at this time):
 
     ```shell
     docker-compose -f monitoring-compose -d
+    ```
+
+    - Grafana Dashboard: `localhost:3000`
+
+    - Prometheus : `localhost:9090`
+
+7. Stop this compose and remove containers.
+
+    ```shell
+    docker-compose down
+    docker-compose -f monitoring-compose.yaml down
+
     ```
 
 ### With Kubernetes

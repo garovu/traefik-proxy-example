@@ -43,7 +43,7 @@ services:
     # - prometheus-vol:/prometheus
 networks:
   default:
-    name: traefik-proxy-compose_vnet
+    name: traefik-proxy-compose_default
     external: true
 
 volumes:

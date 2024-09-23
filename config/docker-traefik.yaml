@@ -3,12 +3,7 @@
 # Configuration sample for Traefik v3 custom by @garovu.
 #
 # For Traefik v1: https://github.com/traefik/traefik/blob/v1.7/traefik.sample.toml
-#
-################################################################
 
-################################################################
-# Global configuration
-################################################################
 global:
   checkNewVersion: true
   sendAnonymousUsage: false
@@ -17,10 +12,6 @@ global:
 # EntryPoints configuration
 ################################################################
 
-# EntryPoints definition
-#
-# Optional
-#
 entryPoints:
   web:
     address: :80
@@ -96,44 +87,17 @@ entryPoints:
 # API and dashboard configuration
 ################################################################
 
-# Enable API and dashboard
-#
-# Optional
-#
 api:
-  # Enable the API in insecure mode
-  #
-  # Optional
-  # Default: false
-  #
   insecure: true
-
-  # Enabled Dashboard
-  #
-  # Optional
-  # Default: true
-  #
   dashboard: true
-
-  # Enable debug mode for API
-  #
-  # Optional
-  # Default: true
-  # 
   debug: true
 
 ################################################################
 # Ping configuration
 ################################################################
 
-# Enable ping
 ping:
-  # Name of the related entry point
-  #
-  # Optional
-  # Default: "traefik"
-  #
-  entryPoint: ping
+  entryPoint: traefik
 
 ################################################################
 # Docker configuration backend
@@ -141,13 +105,8 @@ ping:
 
 providers:
   # Enable Docker configuration backend
-  docker: {}
-    # Docker server endpoint. Can be a tcp or a unix socket endpoint.
-    #
-    # Required
-    # Default: "unix:///var/run/docker.sock"
-    #
-    # endpoint: tcp://10.10.10.10:2375
+  docker: 
+    endpoint: "unix:///var/run/docker.sock"
 
     # Default host rule.
     #
@@ -164,8 +123,8 @@ providers:
     # exposedByDefault: false
   
   # Enable the file provider to define routers / middlewares / services in file
-  file:
-    directory: /etc/traefik/dynamic
+  # file:
+    # directory: /etc/traefik/dynamic
 
 ################################################################
 # Traefik metrics configuration
